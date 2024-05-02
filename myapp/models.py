@@ -5,7 +5,9 @@ from django.db import models
 class Link(models.Model):
 
     def __str__(self):
-        return self.name
+        if self.name:
+            return self.name
+        return "Unnamed Link" 
 
     address = models.CharField(max_length=1000, null=True, blank=True)
     name = models.CharField(max_length=1000, null=True, blank=True)
