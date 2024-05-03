@@ -8,21 +8,20 @@ from .models import Link
 
 
 def scrape(request):
-    try:
-        if request.method == "POST":
-            site = request.POST.get("site", "")
-            if not site:
-                return HttpResponseRedirect("/")
-            page = requests.get(site)
-            soup = BeautifulSoup(page.text, "html.parser")
-
-            for link in soup.find_all("a"):
-                link_address = link.get("href")
-                link_text = link.string
-                Link.objects.create(address=link_address, name=link_text)
+    
+    if request.method == "POST":
+        site = request.POST.get("site", "")
+        if not site:
             return HttpResponseRedirect("/")
-    except Exception as e:
-        print("Error:", e)  # Print any errors to diagnose the issue
+        page = requests.get(site)
+        soup = BeautifulSoup(page.text, "html.parser")
+
+        for link in soup.find_all("a"):
+            link_address = link.get("href")
+            link_text = link.string
+            Link.objects.create(address=link_address, name=link_text)
+        return HttpResponseRedirect("/")
+    
     else:
         data = Link.objects.all()
 
