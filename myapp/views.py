@@ -11,7 +11,8 @@ def scrape(request):
     try:
         if request.method == "POST":
             site = request.POST.get("site", "")
-
+            if not site:
+                return HttpResponseRedirect("/")
             page = requests.get(site)
             soup = BeautifulSoup(page.text, "html.parser")
 
